@@ -1,63 +1,72 @@
 #include <Arduino.h>
 
-#define BUTTON_PIN 7
+#define BUTTON1_PIN 7
+#define BUTTON2_PIN 6
 
-TaskHandle_t taskReadButton;
-TaskHandle_t taskDisplayStatus;
+TaskHandle_t taskReadButton1;
+TaskHandle_t taskReadButton2;
 
-volatile bool buttonPressed = false;
+volatile bool button1Pressed = false;
+volatile bool button2Pressed = false;
 
-void readButtonTask(void *pvParameters) {
-  Serial.print("readButtonTask berjalan di Core: ");
+void readButton1Task(void *pvParameters) {
+  Serial.print("readButton1Task berjalan di Core: ");
   Serial.println(xPortGetCoreID());
 
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON1_PIN, INPUT_PULLUP);
 
   for (;;) {
-    bool state = digitalRead(BUTTON_PIN) == LOW;
-    buttonPressed = state;
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    bool state = digitalRead(BUTTON1_PIN) == LOW;
+    if (state != button1Pressed) {
+      button1Pressed = state;
+      Serial.print("Core 0 → ");
+      Serial.println(state ? "Button 1 DITEKAN" : "Button 1 DILEPAS");
+    }
+    vTaskDelay(50 / portTICK_PERIOD_MS);
   }
 }
 
-void displayStatusTask(void *pvParameters) {
-  Serial.print("\ndisplayStatusTask berjalan di Core: ");
+void readButton2Task(void *pvParameters) {
+  Serial.print("readButton2Task berjalan di Core: ");
   Serial.println(xPortGetCoreID());
 
+  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+
   for (;;) {
-    if (buttonPressed) {
-      Serial.println("Button DITEKAN");
-    } else {
-      Serial.println("Button DILEPAS");
+    bool state = digitalRead(BUTTON2_PIN) == LOW;
+    if (state != button2Pressed) {
+      button2Pressed = state;
+      Serial.print("Core 1 → ");
+      Serial.println(state ? "Button 2 DITEKAN" : "Button 2 DILEPAS");
     }
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
   }
 }
 
 void setup() {
   Serial.begin(115200);
   vTaskDelay(1000 / portTICK_PERIOD_MS);
+  Serial.println("\n=== Program Dual Button Multi-Core ===");
 
   xTaskCreatePinnedToCore(
-    readButtonTask,
-    "ReadButton",
+    readButton1Task,
+    "ReadButton1",
     2048,
     NULL,
     1,
-    &taskReadButton,
+    &taskReadButton1,
     0
   );
 
   xTaskCreatePinnedToCore(
-    displayStatusTask,
-    "DisplayStatus",
+    readButton2Task,
+    "ReadButton2",
     2048,
     NULL,
     1,
-    &taskDisplayStatus,
+    &taskReadButton2,
     1
   );
-
 }
 
 void loop() {
