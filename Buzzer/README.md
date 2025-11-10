@@ -107,4 +107,4 @@ Core 1: Buzzer OFF
 ![Hasil Screenshot Core 0](../assets/Buzzer_Core_1.png)
 
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
-[Percobaan Buzzer]([https...link.anda...](https://drive.google.com/file/d/1Nis6ZLg0DUDegRkt0WOP2ZAGNJff4Pq9/view?usp=drive_link))
+[Percobaan Buzzer](https://drive.google.com/file/d/1Nis6ZLg0DUDegRkt0WOP2ZAGNJff4Pq9/view?usp=drive_link)
