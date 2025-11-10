@@ -1,99 +1,104 @@
 ## Percobaan Button
 Wokwi Project [Link](https://wokwi.com/projects/447212070337922049)
-Percobaan ini bertujuan untuk membaca status tombol (push button) menggunakan dua core prosesor ESP32.
-Core 0 bertugas membaca input dari tombol, sementara Core 1 menampilkan status tombol ke Serial Monitor secara paralel.
+Percobaan ini bertujuan untuk membaca dua tombol (push button) menggunakan dua core prosesor ESP32.
+Core 0 bertugas membaca Button 1, sementara Core 1 bertugas membaca Button 2.
+Kedua core berjalan paralel dan menampilkan status tombol masing-masing secara independen di Serial Monitor.
 
 ## Penjelasan Kode
 ### 1. Definisi Pin dan Task
-Pin yang digunakan untuk tombol serta deklarasi task didefinisikan di awal program.
+Dua pin digunakan untuk tombol dan dua task dibuat untuk menjalankan pembacaan secara paralel di dua core.
 ```c
 #include <Arduino.h>
 
-#define BUTTON_PIN 7
+#define BUTTON1_PIN 7
+#define BUTTON2_PIN 8
 
-TaskHandle_t taskReadButton;
-TaskHandle_t taskDisplayStatus;
+TaskHandle_t taskReadButton1;
+TaskHandle_t taskReadButton2;
 
-volatile bool buttonPressed = false;
+volatile bool button1Pressed = false;
+volatile bool button2Pressed = false;
 ```
-`BUTTON_PIN` menentukan pin GPIO tempat tombol terhubung.
-Dua variabel `TaskHandle_t` digunakan untuk menyimpan handle dari kedua task (`taskReadButton` dan `taskDisplayStatus`).
-Variabel `buttonPressed` bertipe `volatile` agar aman diakses oleh dua core secara bersamaan.
+Masing-masing tombol terhubung ke pin GPIO 7 dan 8, dengan mode `INPUT_PULLUP`.
+Dua variabel `volatile` digunakan agar data yang dibaca antar core tetap konsisten.
 
-### 2. Task `readButtonTask`
-Task ini dijalankan di Core 0 dan bertugas membaca status tombol secara terus-menerus.
+### 2. Task `readButton1Task`(Core 0)
+Task pertama dijalankan di Core 0 untuk membaca status Button 1.
 ```c
-void readButtonTask(void *pvParameters) {
-  Serial.print("readButtonTask berjalan di Core: ");
+void readButton1Task(void *pvParameters) {
+  Serial.print("readButton1Task berjalan di Core: ");
   Serial.println(xPortGetCoreID());
 
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON1_PIN, INPUT_PULLUP);
 
   for (;;) {
-    bool state = digitalRead(BUTTON_PIN) == LOW; // tombol aktif LOW
-    buttonPressed = state;
-    vTaskDelay(10 / portTICK_PERIOD_MS);
-  }
-}
-```
-Fungsi ini menggunakan `digitalRead()` untuk membaca status pin tombol. Karena tombol menggunakan mode `INPUT_PULLUP`, maka kondisi aktif adalah `LOW`.
-Fungsi `vTaskDelay()` memberikan jeda kecil agar pembacaan tombol lebih stabil dan tidak terbaca berulang akibat bouncing.
-
-### 3. Task `displayStatusTask`
-Task ini dijalankan di Core 1 dan bertanggung jawab menampilkan status tombol ke Serial Monitor.
-```c
-void displayStatusTask(void *pvParameters) {
-  Serial.print("displayStatusTask berjalan di Core: ");
-  Serial.println(xPortGetCoreID());
-
-  for (;;) {
-    if (buttonPressed) {
-      Serial.println("Button DITEKAN");
-    } else {
-      Serial.println("Button DILEPAS");
+    bool state = digitalRead(BUTTON1_PIN) == LOW;
+    if (state != button1Pressed) {
+      button1Pressed = state;
+      Serial.print("Core 0 → ");
+      Serial.println(state ? "Button 1 DITEKAN" : "Button 1 DILEPAS");
     }
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
   }
 }
 ```
-Task ini memeriksa variabel `buttonPressed` dan menampilkan statusnya setiap 500 ms ke Serial Monitor.
-Karena berjalan di core yang berbeda, task ini dapat menampilkan status tombol secara real-time tanpa menghambat proses pembacaan tombol di core lainnya.
+Tombol dibaca terus-menerus, dan hanya mencetak pesan ke Serial Monitor jika terjadi perubahan status (tekan/lepas).
+
+### 3. Task `readButton2Task` (Core 1)
+Task kedua dijalankan di Core 1 untuk membaca status Button 2.
+```c
+void readButton2Task(void *pvParameters) {
+  Serial.print("readButton2Task berjalan di Core: ");
+  Serial.println(xPortGetCoreID());
+
+  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+
+  for (;;) {
+    bool state = digitalRead(BUTTON2_PIN) == LOW;
+    if (state != button2Pressed) {
+      button2Pressed = state;
+      Serial.print("Core 1 → ");
+      Serial.println(state ? "Button 2 DITEKAN" : "Button 2 DILEPAS");
+    }
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+  }
+}
+```
+Core 1 bekerja secara paralel dengan Core 0, sehingga masing-masing tombol dapat dideteksi secara independen tanpa saling menunggu.
 
 ### 4. Fungsi `setup()`
-Fungsi `setup()` digunakan untuk menginisialisasi komunikasi serial dan membuat kedua task di dua core berbeda.
+Fungsi ini digunakan untuk menginisialisasi komunikasi serial dan membuat task untuk kedua core.
 ```c
 void setup() {
   Serial.begin(115200);
   vTaskDelay(1000 / portTICK_PERIOD_MS);
+  Serial.println("\n=== Program Dual Button Multi-Core ===");
 
   xTaskCreatePinnedToCore(
-    readButtonTask,     // Fungsi task
-    "ReadButton",       // Nama task
-    2048,               // Ukuran stack
-    NULL,               // Parameter
-    1,                  // Prioritas
-    &taskReadButton,    // Handle task
-    0                   // Core 0
-  );
-
-  xTaskCreatePinnedToCore(
-    displayStatusTask,
-    "DisplayStatus",
+    readButton1Task,
+    "ReadButton1",
     2048,
     NULL,
     1,
-    &taskDisplayStatus,
-    1                   // Core 1
+    &taskReadButton1,
+    0  // Core 0
   );
 
-  Serial.println("Task untuk Button berhasil dibuat di Core 0 & Core 1");
+  xTaskCreatePinnedToCore(
+    readButton2Task,
+    "ReadButton2",
+    2048,
+    NULL,
+    1,
+    &taskReadButton2,
+    1  // Core 1
+  );
 }
 ```
-Fungsi `xTaskCreatePinnedToCore()` digunakan untuk menentukan task mana berjalan di core mana.
-Dengan begitu, pembacaan tombol dan tampilan status benar-benar berjalan paralel.
+Dengan `xTaskCreatePinnedToCore()`, setiap fungsi pembaca tombol dikunci di core tertentu sehingga bisa berjalan dengan baik.
 
 ### 5. Fungsi `loop()`  
-Fungsi `loop()` tidak digunakan karena seluruh logika program telah dijalankan di dua task berbeda.
+Loop utama dibiarkan kosong karena semua logika sudah dijalankan dalam task.
 ```c
 void loop() {
   vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -101,30 +106,21 @@ void loop() {
 ```
 
 ## Hasil Percobaan
-Hasil percobaan menunjukkan bahwa Core 0 mampu membaca tombol dengan baik, sedangkan Core 1 menampilkan status tombol secara real-time.
-Output Serial Monitor akan berbeda tergantung pada kondisi tombol.
+Percobaan menunjukkan bahwa kedua core mampu membaca tombol masing-masing dengan respon cepat dan independen.
+Saat salah satu tombol ditekan, hanya core terkait yang menampilkan status di Serial Monitor.
 
 Hasil Serial Monitor pada Core 0:
 ```shell
-readButtonTask berjalan di Core: 0 
-displayStatusTask berjalan di Core: 1 
-Button DILEPAS
-Button DILEPAS
-Button DILEPAS
-Button DILEPAS
+=== Program Dual Button Multi-Core ===
+readButton1Task berjalan di Core: 0 readButton2Task berjalan di Core: 1
+
+Core 0 → Button 1 DITEKAN
+Core 0 → Button 1 DILEPAS
+Core 1 → Button 2 DITEKAN
+Core 1 → Button 2 DILEPAS
 ```
 
-Hasil Serial Monitor pada Core 1:
-```shell
-readButtonTask berjalan di Core: 0 
-displayStatusTask berjalan di Core: 1 
-Button DILEPAS
-Button DITEKAN
-Button DITEKAN
-Button DITEKAN
-```
-
-### Hasil Screenshot Core 0 (Pembacaan `readButtonTask`) & Core 1 (Status `displayStatusTask`)
+### Hasil Screenshot
 ---
 ![Hasil Screenshot Core 0 & 1](../assets/Button_Core_1&0_1.png)
 
@@ -132,4 +128,4 @@ Button DITEKAN
 
 
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
-[Percobaan Button](https://drive.google.com/file/d/1KIuYfP2UALllpA2vBfug6GYwfYf2TmNv/view?usp=drive_link)
+[Percobaan Button](https://drive.google.com/file/d/1zTX2FChexWlB6IM7EctOILZNdJaKcMi5/view?usp=drive_link)
