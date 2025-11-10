@@ -1,4 +1,4 @@
-## Percobaan LED
+## Percobaan Button
 Wokwi Project [Link](https://wokwi.com/projects/447212070337922049)
 Percobaan ini bertujuan untuk membaca status tombol (push button) menggunakan dua core prosesor ESP32.
 Core 0 bertugas membaca input dari tombol, sementara Core 1 menampilkan status tombol ke Serial Monitor secara paralel.
