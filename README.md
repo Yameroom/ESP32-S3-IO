@@ -1,7 +1,7 @@
 ## Implementasi I/O ESP32-S3 menggunakan FreeRTOS
 
-**Nama:** Rifqi Raehan Hermawan \
-**NRP:** 3223600004 \
+**Nama:** Muhammad Bimo Fachrizky \
+**NRP:** 3223600019 \
 **Kelas:** 3 D4 Teknik Komputer A
 
 
