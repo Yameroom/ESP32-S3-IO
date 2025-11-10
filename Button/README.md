@@ -122,9 +122,9 @@ Core 1 → Button 2 DILEPAS
 
 ### Hasil Screenshot
 ---
-![Hasil Screenshot Core 0 & 1](../assets/Button_Core_1&0_1.png)
+![Hasil Screenshot Core 0 & 1](../assets/Button_Core1_2.png)
 
-![Hasil Screenshot Core 0 & 1](../assets/Button_Core_1&0_2.png)
+![Hasil Screenshot Core 0 & 1](../assets/Button_Core2_1.png)
 
 
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
