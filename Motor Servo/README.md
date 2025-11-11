@@ -114,5 +114,9 @@ Core 1: Gerak ke 0 derajat
 
 ![Hasil Screenshot Core 1](../assets/Servo_Core_1.png)
 
+## Hasil Video Demo
+
+![Hasil Screenshot Core 1](../assets/Percobaan_Servo.gif)
+
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan Servo](https://drive.google.com/file/d/1mUMzly3cSU9e0WwtdwtqEowXoirBX8SG/view?usp=drive_link)

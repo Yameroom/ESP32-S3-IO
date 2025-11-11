@@ -95,5 +95,9 @@ Nilai Potensiometer: 2410
 ---
 ![Hasil Screenshot](../assets/Potensio_Core_1&0_1.png)
 
+### Hasil Video Demo
+---
+![Hasil Screenshot](../assets/Percobaan_Potensio.gif)
+
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan Potensio](https://drive.google.com/file/d/1iEv4jGHrobTggerbS6L2pAjj7bi5juqO/view?usp=drive_link)

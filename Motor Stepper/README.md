@@ -121,5 +121,9 @@ Core 1: Putar 1x Searah Jarum Jam
 
 ![Hasil Screenshot Core 1](../assets/Stepper_Core_1.png)
 
+### Hasil Video Demo
+
+![Hasil Screenshot Core 1](../assets/Percobaan_Stepper.gif)
+
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan Motor Stepper](https://drive.google.com/file/d/1tolo3iA76OpiCzf9Pa_t38yACZe9JFQC/view?usp=drive_link)

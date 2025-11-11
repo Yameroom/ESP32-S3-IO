@@ -132,5 +132,8 @@ oledTask berjalan di Core: 1
 ## Hasil Screenshot Core 1
 ![Hasil Screenshot Core 1](../assets/OLED_Core_1.png)
 
+## Hasil Video Demo
+![Hasil Screenshot Core 1](../assets/Percobaan_Oled.gif)
+
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan OLED](https://drive.google.com/file/d/1VDUDtppt6PCeDPG2iVnSeIYGnLH-jEgp/view?usp=drive_link)
