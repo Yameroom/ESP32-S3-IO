@@ -99,5 +99,10 @@ Core 1: LEDs OFF
 
 ![Hasil Screenshot Core 1](../assets/Led_Core_1_2.png)
 
+### Hasil Screenshot Core 1
+---
+![Hasil Screenshot Core 1](../assets/Percobaan LED 1.gif)
+
+
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan LED](https://drive.google.com/file/d/1hMPndHh9LXm_antWWamSts_QvfU_FJ1s/view?usp=drive_link)
