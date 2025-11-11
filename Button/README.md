@@ -126,6 +126,10 @@ Core 1 → Button 2 DILEPAS
 
 ![Hasil Screenshot Core 0 & 1](../assets/Button_Core2_1.png)
 
+### Hasil Video Demo
+---
+![Hasil Video](../assets/Percobaan_Button.gif)
+
 
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan Button](https://drive.google.com/file/d/1zTX2FChexWlB6IM7EctOILZNdJaKcMi5/view?usp=drive_link)
