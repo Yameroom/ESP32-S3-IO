@@ -1,6 +1,6 @@
 ## Percobaan 8: Integrasi All Peripheral (Multi-Tasking) Dual Core
-**Nama:** Rifqi Raehan Hermawan \
-**NRP:** 3223600004 \
+**Nama:** Muhammad Bimo Fachrizky \
+**NRP:** 3223600019 \
 **Kelas:** 3 D4 Teknik Komputer A
 
 Percobaan integrasi dari semua 8 periferal (3x LED, Buzzer, OLED, Stepper, Servo, 2x Button, Potentiometer, Encoder) ke dalam satu program. Tujuannya adalah untuk menjalankan semua periferal secara bersamaan (concurrently) tanpa saling memblokir, menggunakan arsitektur dual-core FreeRTOS dengan program Task untuk masing-masing peripheral.
