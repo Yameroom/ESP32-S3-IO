@@ -114,5 +114,9 @@ Putaran CW dijalankan di Core: 1
 ---
 ![Hasil Screenshot](../assets/Encoder_Core_1&0_1.png)
 
+### Hasil Video Demo
+---
+![Hasil Screenshot](../assets/Percobaan_Encoder.gif)
+
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan Encoder](https://drive.google.com/file/d/1SurKcIZlFbojhfIzsFsyIf0HZJRjz4UU/view?usp=drive_link)
