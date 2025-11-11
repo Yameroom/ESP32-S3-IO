@@ -112,11 +112,18 @@ Pot(4095) | Btn 1 | Btn 2 | Encoder Dir
 2145      | OFF   | OFF   | 0
 ```
 
-### Hasil Screenshot/Video
+### Hasil Screenshot
 
 ![Hasil Screenshot Integrasi 1](../assets/All_Peripheral_1.png)
 ![Hasil Screenshot Integrasi 2](../assets/All_Peripheral_2.png)
 ![Hasil Screenshot Integrasi 3](../assets/All_Peripheral_3.png)
+
+### Hasil Video
+
+![Hasil Screenshot Integrasi 1](../assets/Percobaan_Peripheral.gif)
+![Hasil Screenshot Integrasi 2](../assets/Percobaan_Peripheral_2.gif)
+![Hasil Screenshot Integrasi 3](../assets/Percobaan_Peripheral_3.gif)
+
 
 Hasil Video Percobaan bisa diakses melalui link drive berikut:
 [Percobaan Integrasi](https://drive.google.com/file/d/1Lz7u1GicKFVQauUDZXRgjBgvgX1WkDtc/view?usp=drive_link)
